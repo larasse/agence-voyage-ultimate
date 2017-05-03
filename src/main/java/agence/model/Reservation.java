@@ -135,16 +135,13 @@ public class Reservation
         this.passager = passager;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see java.lang.Object#toString()
-     */
-    @Override
-    public String toString()
-    {
-        String reponse = "Reservation : " + this.numero;
-
-        return reponse;
-    }
+    /* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "Reservation [idRes=" + idRes + ", date=" + date + ", numero=" + numero + ", etat=" + etat
+				+ ", passager=" + passager + "]";
+	}
 
 }

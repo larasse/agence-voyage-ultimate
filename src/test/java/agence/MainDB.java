@@ -17,7 +17,6 @@ import agence.dao.ReservationDao;
 import agence.dao.ReservationDaoSql;
 import agence.model.Adresse;
 import agence.model.Client;
-import agence.model.ClientPhysique;
 import agence.model.Passager;
 import agence.model.Reservation;
 
@@ -112,7 +111,7 @@ public class MainDB
         System.out.println("Appuyez sur une touche pour continuer");
         scanner.nextLine();
         
-        System.out.println("Test 9 : On recupere tous le client physique #50");
+        System.out.println("Test 9 : On recupere le client physique #50");
         System.out.println(clientPhysique);
         System.out.println("Appuyez sur une touche pour continuer");
         scanner.nextLine();

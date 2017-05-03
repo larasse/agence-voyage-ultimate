@@ -24,6 +24,15 @@ public class ClientMoral extends Client {
 	public ClientMoral(String siret) {
 		
 		// TODO Auto-generated constructor stub
+		this.siret = siret;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return super.toString() + "ClientMoral [siret=" + siret + "]";
 	}
 
 	
