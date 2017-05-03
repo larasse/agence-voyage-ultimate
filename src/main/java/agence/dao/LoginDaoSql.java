@@ -96,9 +96,70 @@ public class LoginDaoSql implements LoginDao {
      */
 
 	@Override
-	public Login findById(Integer id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public Login findById(Integer id) 
+	{
+		// Initialiser ma liste d'adresses
+        Login login = null;
+        try
+        {
+            /*
+             * Etape 0 : chargement du pilote
+             */
+            Class.forName("com.mysql.jdbc.Driver");
+
+            /*
+             * Etape 1 : se connecter à la BDD
+             */
+            Connection connexion = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3306/agence", "user", "password");
+
+            /*
+             * Etape 2 : Création du statement
+             */
+            Statement statement = connexion.createStatement();
+
+            /*
+             * Etape 3 : Exécution de la requête SQL
+             */
+            ResultSet resultSet = statement.executeQuery("SELECT *FROM login WHERE id = "+id);
+           
+            /*
+             * Etape 4 : Parcours des résultats
+             */
+            if (resultSet.next())
+            {
+                // Chaque ligne du tableau de résultat peut être exploitée
+                // cad, on va récupérer chaque valeur de chaque colonne
+                // je crée l'objet adresse
+                 login = new Login();
+                // appel des mutateurs
+                login.setId(resultSet.getInt("id"));
+               login.setLogin(resultSet.getString("login"));
+                login.setMotDePasse(resultSet.getString("motdepasse"));
+                login.setAdmin(resultSet.getInt("admin"));
+                
+               
+                
+            }
+
+            /*
+             * Etape 5 : je ferme la connexion à la BDD
+             */
+            connexion.close();
+        }
+        catch (ClassNotFoundException e)
+        {
+            System.err.println("Impossible de charger le pilote JDBC.");
+            e.printStackTrace();
+        }
+        catch (SQLException e)
+        {
+            System.err.println("Impossible de se connecter à la BDD.");
+            e.printStackTrace();
+        }
+        // Je retourne la liste des adresses de la BDDonnéys
+        return login;
 
 }
+}
+
