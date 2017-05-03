@@ -8,7 +8,6 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -263,9 +262,73 @@ public class ReservationDaoSql implements ReservationDao
     }
 
 	@Override
-	public List<Reservation> findByClient(Client client) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Reservation> findByClient(Client client) {	
+		
+        // Initialier ma liste d'objets reservation
+        List<Reservation> listeBO = new ArrayList<>();
+        try
+        {
+            /*
+             * Etape 0 : chargement du pilote
+             */
+            Class.forName("com.mysql.jdbc.Driver");
+
+            /*
+             * Etape 1 : se connecter à la BDD
+             */
+            Connection connexion = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3306/agence", "user", "password");
+
+            /*
+             * Etape 2 : Création du statement
+             */
+            Statement statement = connexion.createStatement();
+
+            /*
+             * Etape 3 : Exécution de la requête SQL
+             */
+            ResultSet resultSet = statement.executeQuery(
+                    "SELECT * FROM reservation WHERE idClient = "
+                            + client.getIdClient());
+
+            /*
+             * Etape 4 : Parcours des résultats
+             */
+            while (resultSet.next())
+            {
+                // Chaque ligne du tableau de résultat peut être exploitée
+                // cad, on va récupérer chaque valeur de chaque colonne
+                // je crée l'objet métier
+                Reservation bo = new Reservation();
+                // appel des mutateurs
+                bo.setIdRes(resultSet.getInt("idResa"));
+                bo.setDate(resultSet.getDate("dateReservation"));
+                bo.setNumero(resultSet.getString("numero"));
+                bo.setEtat(EtatReservation
+                        .permissiveValueOf(resultSet.getString("etat")));
+                // j'ajoute l'objet métier ainsi muté à la liste des objets
+                // métier
+                listeBO.add(bo);
+            }
+
+            /*
+             * Etape 5 : je ferme la connexion à la BDD
+             */
+            connexion.close();
+        }
+        catch (ClassNotFoundException e)
+        {
+            System.err.println("Impossible de charger le pilote JDBC.");
+            e.printStackTrace();
+        }
+        catch (SQLException e)
+        {
+            System.err.println("Impossible de se connecter à la BDD.");
+            e.printStackTrace();
+        }
+        // Je retourne la liste des passagers de la BDDonnéys
+        return listeBO;
+
 	}
 
 }
