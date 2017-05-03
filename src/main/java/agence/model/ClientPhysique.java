@@ -21,8 +21,5 @@ public class ClientPhysique extends Client {
 		super(idClient);
 		// TODO Auto-generated constructor stub
 	} 
-	public ClientPhysique(String prenom) {
-		
-		// TODO Auto-generated constructor stub
-	} 
+	
 }

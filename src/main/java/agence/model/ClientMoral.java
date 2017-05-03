@@ -22,9 +22,6 @@ public class ClientMoral extends Client {
 		// TODO Auto-generated constructor stub
 	}
 
-	public ClientMoral(String siret) {
-		
-		// TODO Auto-generated constructor stub
-	}
+
 	
 }
