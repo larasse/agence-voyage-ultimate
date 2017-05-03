@@ -1,79 +1,178 @@
 package agence.model;
 
+import java.util.List;
+
 public abstract class Client {
 
+	/*
+	 * id du client
+	 */
 	private int idClient;
+	
+	/*
+	 * Nom du client
+	 */
 	private String nom;
-	private String prenom;
-	private String numTel;
-	private int numFax;
-	private String eMail;
-	private int siret;
-	private int idAdd;
-	private int idLog;
+	/*
+	 * numero de telephone du client
+	 */
+	private String numeroTel;
+	/*
+	 * numero de fax du client
+	 */
+	private String numeroFax;
+	/*
+	 * email du client
+	 */
+	private String email;
+	/*
+	 * adresse du client
+	 */
+	private Adresse adresse;
+	/*
+	 * login du client
+	 */
+	private Login login;
 	
-	 public Client(int idClient)
-	    {
-	        this.idClient = idClient;
-	    }
-	 public Client()
-	    {
-	    }
+	/*
+	 * Reservations du client
+	 */
+	private List<Reservation> listReservations;
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "Client [idClient=" + idClient + ", nom=" + nom + ", numeroTel=" + numeroTel + ", numeroFax=" + numeroFax
+				+ ", email=" + email + ", adresse=" + adresse + ", login=" + login + ", listReservations="
+				+ listReservations + "]";
+	}
 
+	/**
+	 * @return the adresse
+	 */
+	public Adresse getAdresse() {
+		return adresse;
+	}
+
+	/**
+	 * @param adresse the adresse to set
+	 */
+	public void setAdresse(Adresse adresse) {
+		this.adresse = adresse;
+	}
+
+	/**
+	 * @return the login
+	 */
+	public Login getLogin() {
+		return login;
+	}
+
+	/**
+	 * @param login the login to set
+	 */
+	public void setLogin(Login login) {
+		this.login = login;
+	}
+
+	/**
+	 * @return the listReservations
+	 */
+	public List<Reservation> getListReservations() {
+		return listReservations;
+	}
+
+	/**
+	 * @param listReservations the listReservations to set
+	 */
+	public void setListReservations(List<Reservation> listReservations) {
+		this.listReservations = listReservations;
+	}
+
+	/**
+	 * @param idClient
+	 */
+	public Client(int idClient) {
+		this.idClient = idClient;
+	}
 	
+	public Client() {
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @return the idClient
+	 */
 	public int getIdClient() {
 		return idClient;
 	}
+
+	/**
+	 * @param idClient the idClient to set
+	 */
 	public void setIdClient(int idClient) {
 		this.idClient = idClient;
 	}
+
+	/**
+	 * @return the nom
+	 */
 	public String getNom() {
 		return nom;
 	}
+
+	/**
+	 * @param nom the nom to set
+	 */
 	public void setNom(String nom) {
 		this.nom = nom;
 	}
-	public String getPrenom() {
-		return prenom;
+
+	/**
+	 * @return the numeroTel
+	 */
+	public String getNumeroTel() {
+		return numeroTel;
 	}
-	public void setPrenom(String prenom) {
-		this.prenom = prenom;
+
+	/**
+	 * @param numeroTel the numeroTel to set
+	 */
+	public void setNumeroTel(String numeroTel) {
+		this.numeroTel = numeroTel;
 	}
-	public String getNumTel() {
-		return numTel;
+
+	/**
+	 * @return the numeroFax
+	 */
+	public String getNumeroFax() {
+		return numeroFax;
 	}
-	public void setNumTel(String numTel) {
-		this.numTel = numTel;
+
+	/**
+	 * @param numeroFax the numeroFax to set
+	 */
+	public void setNumeroFax(String numeroFax) {
+		this.numeroFax = numeroFax;
 	}
-	public int getNumFax() {
-		return numFax;
+
+	/**
+	 * @return the email
+	 */
+	public String getEmail() {
+		return email;
 	}
-	public void setNumFax(int numFax) {
-		this.numFax = numFax;
+
+	/**
+	 * @param email the email to set
+	 */
+	public void setEmail(String email) {
+		this.email = email;
 	}
-	public String geteMail() {
-		return eMail;
-	}
-	public void seteMail(String eMail) {
-		this.eMail = eMail;
-	}
-	public int getSiret() {
-		return siret;
-	}
-	public void setSiret(int siret) {
-		this.siret = siret;
-	}
-	public int getIdAdd() {
-		return idAdd;
-	}
-	public void setIdAdd(int idAdd) {
-		this.idAdd = idAdd;
-	}
-	public int getIdLog() {
-		return idLog;
-	}
-	public void setIdLog(int idLog) {
-		this.idLog = idLog;
-	}
+
 	
+
+		
 }
