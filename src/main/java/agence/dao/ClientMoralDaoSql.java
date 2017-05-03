@@ -3,8 +3,9 @@ package agence.dao;
 import java.util.List;
 
 import agence.model.Client;
+import agence.model.ClientMoral;
 
-public class ClientPhysiqueDao implements ClientDao {
+public class ClientMoralDaoSql implements ClientDao {
 
 	@Override
 	public List<Client> findAll() {

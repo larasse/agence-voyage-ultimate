@@ -13,6 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import agence.model.Client;
 import agence.model.EtatReservation;
 import agence.model.Passager;
 import agence.model.Reservation;
@@ -261,4 +262,10 @@ public class ReservationDaoFile implements ReservationDao
 
         return reservations;
     }
+
+	@Override
+	public List<Reservation> findByClient(Client client) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
