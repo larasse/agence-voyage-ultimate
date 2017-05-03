@@ -50,7 +50,7 @@ public int getAdmin() {
 }
 
 
-public void setadmin(int admin) {
+public void setAdmin(int admin) {
 	this.admin = admin;
 }
 }
