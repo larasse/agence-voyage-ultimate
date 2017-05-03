@@ -4,6 +4,12 @@ public class Login {
 
 	private int id;
 	
+	@Override
+	public String toString() {
+		return "Login [id=" + id + ", login=" + login + ", admin=" + admin + "]";
+	}
+
+
 	private String login;
 	
 	private String motDePasse;
