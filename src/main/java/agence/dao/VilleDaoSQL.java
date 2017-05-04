@@ -6,26 +6,23 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import agence.model.Login;
+import agence.model.Ville;
 
-public class LoginDaoSql extends DaoSQL implements LoginDao
+public class VilleDaoSQL extends DaoSQL implements VilleDao
 {
-
     @Override
-    public List<Login> findAll()
+    public List<Ville> findAll()
     {
-        // Liste des clients que l'on va retourner
-        List<Login> ListLogin = new ArrayList<Login>();
-
+        // Liste des villes que l'on va retourner
+        List<Ville> villes = new ArrayList<Ville>();
+        // Connexion à la BDD
         try
         {
-
             /*
              * Connexion à la BDD
              */
             PreparedStatement ps = connexion
-                    .prepareStatement("SELECT * FROM login");
-
+                    .prepareStatement("SELECT * FROM ville");
             // 4. Execution de la requête
             ResultSet tuple = ps.executeQuery();
             // 5. Parcoutuple de l'ensemble des résultats (ResultSet) pour
@@ -34,15 +31,11 @@ public class LoginDaoSql extends DaoSQL implements LoginDao
             // valeur des attributs de l'objet
             while (tuple.next())
             {
-                // Creation d'un objet Client
-                Login objLogin = new Login(tuple.getInt("id"));
-
-                objLogin.setLogin(tuple.getString("login"));
-                objLogin.setMotDePasse(tuple.getString("motDePasse"));
-                objLogin.setAdmin(tuple.getBoolean("admin"));
-
-                // Ajout du nouvel objet Client créé à la liste des clients
-                ListLogin.add(objLogin);
+                // Creation d'un objet Ville
+                Ville ville = new Ville(tuple.getInt("id"),
+                        tuple.getString("nom"));
+                // Ajout du nouvel objet Ville créé à la liste des villes
+                villes.add(ville);
             } // fin de la boucle de parcoutuple de l'ensemble des résultats
 
         }
@@ -50,21 +43,20 @@ public class LoginDaoSql extends DaoSQL implements LoginDao
         {
             e.printStackTrace();
         }
-        // Retourne la liste de toutes les clients
-        return ListLogin;
+        // Retourne la liste de toutes les villes
+        return villes;
     }
 
-    @Override
-    public Login findById(Integer id)
+    public Ville findById(Integer id)
     {
-        // Déclaration d'un objet Client
-        Login objLogin = null;
+        // Déclaration d'un objet ville
+        Ville ville = null;
 
         try
         {
             // Connexion à la BDD
             PreparedStatement ps = connexion
-                    .prepareStatement("SELECT * FROM login WHERE id=?");
+                    .prepareStatement("SELECT * FROM ville where id=?");
             // Cherche l'idVill voulu dans la BDD
             ps.setInt(1, id);
 
@@ -73,10 +65,7 @@ public class LoginDaoSql extends DaoSQL implements LoginDao
 
             if (tuple.next())
             {
-                objLogin = new Login(tuple.getInt("id"));
-                objLogin.setLogin(tuple.getString("login"));
-                objLogin.setMotDePasse(tuple.getString("motDePasse"));
-                objLogin.setAdmin(tuple.getBoolean("admin"));
+                ville = new Ville(tuple.getInt("id"), tuple.getString("nom"));
             }
 
         }
@@ -85,7 +74,7 @@ public class LoginDaoSql extends DaoSQL implements LoginDao
             e.printStackTrace();
         }
 
-        return objLogin;
+        return ville;
     }
 
 }

@@ -3,8 +3,6 @@
  */
 package agence.dao;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -16,7 +14,7 @@ import agence.model.Passager;
 /**
  * @author Seme
  */
-public class PassagerDaoSql implements PassagerDao
+public class PassagerDaoSql extends DaoSQL implements PassagerDao
 {
     AdresseDao adresseDao = new AdresseDaoSql();
 
@@ -31,17 +29,6 @@ public class PassagerDaoSql implements PassagerDao
         List<Passager> listePassagers = new ArrayList<>();
         try
         {
-            /*
-             * Etape 0 : chargement du pilote
-             */
-            Class.forName("com.mysql.jdbc.Driver");
-
-            /*
-             * Etape 1 : se connecter à la BDD
-             */
-            Connection connexion = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/agence", "user", "password");
-
             /*
              * Etape 2 : Création du statement
              */
@@ -66,20 +53,12 @@ public class PassagerDaoSql implements PassagerDao
                 passager.setIdPas(resultSet.getInt("idPassager"));
                 passager.setNom(resultSet.getString("nom"));
                 passager.setPrenom(resultSet.getString("prenom"));
-                passager.setAdresse(adresseDao.findById(resultSet.getInt("idAdd")));
+                passager.setAdresse(
+                        adresseDao.findById(resultSet.getInt("idAdd")));
                 // j'ajoute l'objet passager ainsi muté à la liste des passagers
                 listePassagers.add(passager);
             }
 
-            /*
-             * Etape 5 : je ferme la connexion à la BDD
-             */
-            connexion.close();
-        }
-        catch (ClassNotFoundException e)
-        {
-            System.err.println("Impossible de charger le pilote JDBC.");
-            e.printStackTrace();
         }
         catch (SQLException e)
         {
@@ -102,17 +81,6 @@ public class PassagerDaoSql implements PassagerDao
         try
         {
             /*
-             * Etape 0 : chargement du pilote
-             */
-            Class.forName("com.mysql.jdbc.Driver");
-
-            /*
-             * Etape 1 : se connecter à la BDD
-             */
-            Connection connexion = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/agence", "user", "password");
-
-            /*
              * Etape 2 : Création du statement
              */
             Statement statement = connexion.createStatement();
@@ -120,8 +88,8 @@ public class PassagerDaoSql implements PassagerDao
             /*
              * Etape 3 : Exécution de la requête SQL
              */
-            ResultSet resultSet = statement
-                    .executeQuery("SELECT * FROM passager WHERE idPassager = " + id);
+            ResultSet resultSet = statement.executeQuery(
+                    "SELECT * FROM passager WHERE idPassager = " + id);
 
             /*
              * Etape 4 : Parcours des résultats
@@ -136,18 +104,10 @@ public class PassagerDaoSql implements PassagerDao
                 passager.setIdPas(resultSet.getInt("idPassager"));
                 passager.setNom(resultSet.getString("nom"));
                 passager.setPrenom(resultSet.getString("prenom"));
-                passager.setAdresse(adresseDao.findById(resultSet.getInt("idAdd")));
+                passager.setAdresse(
+                        adresseDao.findById(resultSet.getInt("idAdd")));
             }
 
-            /*
-             * Etape 5 : je ferme la connexion à la BDD
-             */
-            connexion.close();
-        }
-        catch (ClassNotFoundException e)
-        {
-            System.err.println("Impossible de charger le pilote JDBC.");
-            e.printStackTrace();
         }
         catch (SQLException e)
         {

@@ -1,151 +1,112 @@
+/**
+ * 
+ */
 package agence.dao;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 import agence.model.Client;
 import agence.model.ClientMoral;
-import agence.model.ClientPhysique;
 
-public class ClientMoralDaoSql implements ClientDao {
+/**
+ * @author Seme
+ */
+public class ClientMoralDaoSql extends ClientDaoSql
+{
+    public List<Client> findAll()
+    {
+        // Liste des clients que l'on va retourner
+        List<Client> ListClients = new ArrayList<Client>();
+        AdresseDaoSql adresseDAO = new AdresseDaoSql();
+        LoginDaoSql loginDAO = new LoginDaoSql();
 
-	private AdresseDao adresseDao = new AdresseDaoSql();
-	private LoginDao loginDao = new LoginDaoSql();
-	private ReservationDao reservationDao = new ReservationDaoSql();
-	
-	@Override
-	public List<Client> findAll() {
-		// TODO Auto-generated method stub
+        try
+        {
 
-		// Initialiser ma liste de clients
-		List<Client> listeClients = new ArrayList<>();
-		try {
-			/*
-			 * Etape 0 : chargement du pilote
-			 */
-			Class.forName("com.mysql.jdbc.Driver");
+            /*
+             * Connexion à la BDD
+             */
+            PreparedStatement ps = connexion.prepareStatement(
+                    "SELECT * FROM client WHERE siret IS NOT NULL");
 
-			/*
-			 * Etape 1 : se connecter à la BDD
-			 */
-			Connection connexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/agence", "user",
-					"password");
+            // 4. Execution de la requête
+            ResultSet tuple = ps.executeQuery();
+            // 5. Parcoutuple de l'ensemble des résultats (ResultSet) pour
+            // récupérer les valeutuple des colonnes du tuple qui correspondent
+            // aux
+            // valeur des attributs de l'objet
+            while (tuple.next())
+            {
+                // Creation d'un objet Client
+                Client objClient = new ClientMoral(tuple.getInt("idClient"));
 
-			/*
-			 * Etape 2 : Création du statement
-			 */
-			Statement statement = connexion.createStatement();
+                objClient.setNom(tuple.getString("nom"));
+                objClient.setNumeroTel(tuple.getString("numTel"));
+                objClient.setNumeroFax(tuple.getString("numFax"));
+                objClient.setEmail(tuple.getString("eMail"));
+                ((ClientMoral) objClient).setSiret(tuple.getLong("siret"));
 
-			/*
-			 * Etape 3 : Exécution de la requête SQL
-			 */
-			ResultSet resultSet = statement.executeQuery("SELECT * FROM client WHERE siret IS NOT NULL");
+                objClient
+                        .setAdresse(adresseDAO.findById(tuple.getInt("idAdd")));
+                objClient.setLogin(loginDAO.findById(tuple.getInt("idLog")));
 
-			/*
-			 * Etape 4 : Parcours des résultats
-			 */
-			while (resultSet.next()) {
-				// Chaque ligne du tableau de résultat peut être exploitée
-				// cad, on va récupérer chaque valeur de chaque colonne
-				// je crée l'objet client
-				Client clientMoral = new ClientMoral(resultSet.getString("siret"));
-				// appel des mutateurs
-				clientMoral.setIdClient(resultSet.getInt("idClient"));
-				clientMoral.setNom(resultSet.getString("nom"));
-				clientMoral.setNumeroTel(resultSet.getString("numTel"));
-				clientMoral.setNumeroFax(resultSet.getString("numFax"));
-				clientMoral.setEmail(resultSet.getString("eMail"));
+                // Ajout du nouvel objet Client créé à la liste des clients
+                ListClients.add(objClient);
+            } // fin de la boucle de parcoutuple de l'ensemble des résultats
 
-				clientMoral.setAdresse(adresseDao.findById(resultSet.getInt("idAdd")));
-				clientMoral.setLogin(loginDao.findById(resultSet.getInt("idLog")));
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        // Retourne la liste de toutes les clients
+        return ListClients;
+    }
 
-				clientMoral.setListReservations(reservationDao.findByClient(clientMoral));
-				// j'ajoute l'objet client ainsi muté à la liste des passagers
-				listeClients.add(clientMoral);
-			}
+    @Override
+    public Client findById(Integer idCli)
+    {
+        // Déclaration d'un objet Client
+        Client objClient = null;
+        AdresseDaoSql adresseDAO = new AdresseDaoSql();
+        LoginDaoSql loginDAO = new LoginDaoSql();
 
-			/*
-			 * Etape 5 : je ferme la connexion à la BDD
-			 */
-			connexion.close();
-		} catch (ClassNotFoundException e) {
-			System.err.println("Impossible de charger le pilote JDBC.");
-			e.printStackTrace();
-		} catch (SQLException e) {
-			System.err.println("Impossible de se connecter à la BDD.");
-			e.printStackTrace();
-		}
-		// Je retourne la liste des clients de la BDDonnéys
-		return listeClients;
-	}
+        try
+        {
+            // Connexion à la BDD
+            PreparedStatement ps = connexion.prepareStatement(
+                    "SELECT * FROM client WHERE idClient=? AND siret IS NOT NULL");
+            // Cherche l'idVill voulu dans la BDD
+            ps.setInt(1, idCli);
 
-	@Override
-	public Client findById(Integer id) {
-		// TODO Auto-generated method stub
+            // Récupération des résultats de la requête
+            ResultSet tuple = ps.executeQuery();
 
-		// Initialiser mon client
-		Client clientMoral = null;
-		try {
-			/*
-			 * Etape 0 : chargement du pilote
-			 */
-			Class.forName("com.mysql.jdbc.Driver");
+            if (tuple.next())
+            {
+                objClient = new ClientMoral(tuple.getInt("idClient"));
+                objClient.setNom(tuple.getString("nom"));
+                objClient.setNumeroTel(tuple.getString("numTel"));
+                objClient.setNumeroFax(tuple.getString("numFax"));
+                objClient.setEmail(tuple.getString("eMail"));
+                ((ClientMoral) objClient).setSiret(tuple.getLong("siret"));
 
-			/*
-			 * Etape 1 : se connecter à la BDD
-			 */
-			Connection connexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/agence", "user",
-					"password");
+                objClient
+                        .setAdresse(adresseDAO.findById(tuple.getInt("idAdd")));
+                objClient.setLogin(loginDAO.findById(tuple.getInt("idLog")));
+            }
 
-			/*
-			 * Etape 2 : Création du statement
-			 */
-			Statement statement = connexion.createStatement();
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
 
-			/*
-			 * Etape 3 : Exécution de la requête SQL
-			 */
-			ResultSet resultSet = statement
-					.executeQuery("SELECT * FROM client WHERE siret IS NOT NULL AND idClient = " + id);
-
-			/*
-			 * Etape 4 : Parcours des résultats
-			 */
-			if (resultSet.next()) {
-				// Chaque ligne du tableau de résultat peut être exploitée
-				// cad, on va récupérer chaque valeur de chaque colonne
-				// je crée l'objet client
-				clientMoral = new ClientMoral(resultSet.getString("siret"));
-				// appel des mutateurs
-				clientMoral.setIdClient(resultSet.getInt("idClient"));
-				clientMoral.setNom(resultSet.getString("nom"));
-
-				clientMoral.setAdresse(adresseDao.findById(resultSet.getInt("idAdd")));
-				clientMoral.setLogin(loginDao.findById(resultSet.getInt("idLog")));
-
-				clientMoral.setAdresse(adresseDao.findById(resultSet.getInt("idAdd")));
-				clientMoral.setLogin(loginDao.findById(resultSet.getInt("idLog")));
-
-				clientMoral.setListReservations(reservationDao.findByClient(clientMoral));
-			}
-			/*
-			 * Etape 5 : je ferme la connexion à la BDD
-			 */
-			connexion.close();
-		} catch (ClassNotFoundException e) {
-			System.err.println("Impossible de charger le pilote JDBC.");
-			e.printStackTrace();
-		} catch (SQLException e) {
-			System.err.println("Impossible de se connecter à la BDD.");
-			e.printStackTrace();
-		}
-		// Je retourne l'objet métier
-		return clientMoral;
-	}
+        return objClient;
+    }
 
 }

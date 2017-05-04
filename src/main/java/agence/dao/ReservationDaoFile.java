@@ -190,8 +190,8 @@ public class ReservationDaoFile implements ReservationDao
         try
         {
             // On ouvre le fichier à lire
-            bReader = new BufferedReader(
-                    new FileReader(new File("src/resources/reservations_passager.csv")));
+            bReader = new BufferedReader(new FileReader(
+                    new File("src/resources/reservations_passager.csv")));
             // chaîne temporaire
             String s;
             // indicateur de première ligne
@@ -263,9 +263,14 @@ public class ReservationDaoFile implements ReservationDao
         return reservations;
     }
 
-	@Override
-	public List<Reservation> findByClient(Client client) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    /*
+     * (non-Javadoc)
+     * @see agence.dao.ReservationDao#findByClient(agence.model.Client)
+     */
+    @Override
+    public List<Reservation> findByClient(Client client)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }

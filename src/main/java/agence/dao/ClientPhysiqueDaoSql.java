@@ -1,150 +1,114 @@
+/**
+ * 
+ */
 package agence.dao;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 import agence.model.Client;
 import agence.model.ClientPhysique;
 
-public class ClientPhysiqueDaoSql implements ClientDao {
+/**
+ * @author Seme
+ */
+public class ClientPhysiqueDaoSql extends ClientDaoSql
+{
+    public List<Client> findAll()
+    {
+        // Liste des clients que l'on va retourner
+        List<Client> listeClients = new ArrayList<Client>();
+        AdresseDaoSql adresseDAO = new AdresseDaoSql();
+        LoginDaoSql loginDAO = new LoginDaoSql();
 
-	private AdresseDao adresseDao = new AdresseDaoSql();
-	private LoginDao loginDao = new LoginDaoSql();
-	private ReservationDao reservationDao = new ReservationDaoSql();
+        try
+        {
 
-	@Override
-	public List<Client> findAll() {
-		// TODO Auto-generated method stub
+            /*
+             * Connexion à la BDD
+             */
+            PreparedStatement ps = connexion.prepareStatement(
+                    "SELECT * FROM client WHERE siret IS NULL");
 
-		// Initialiser ma liste de clients
-		List<Client> listeClients = new ArrayList<>();
-		try {
-			/*
-			 * Etape 0 : chargement du pilote
-			 */
-			Class.forName("com.mysql.jdbc.Driver");
+            // 4. Execution de la requête
+            ResultSet tuple = ps.executeQuery();
+            // 5. Parcoutuple de l'ensemble des résultats (ResultSet) pour
+            // récupérer les valeutuple des colonnes du tuple qui correspondent
+            // aux
+            // valeur des attributs de l'objet
+            while (tuple.next())
+            {
+                // Creation d'un objet Client
+                Client objClient = new ClientPhysique(tuple.getInt("idClient"));
 
-			/*
-			 * Etape 1 : se connecter à la BDD
-			 */
-			Connection connexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/agence", "user",
-					"password");
+                objClient.setNom(tuple.getString("nom"));
+                ((ClientPhysique) objClient)
+                        .setPrenom(tuple.getString("prenom"));
+                objClient.setNumeroTel(tuple.getString("numTel"));
+                objClient.setNumeroFax(tuple.getString("numFax"));
+                objClient.setEmail(tuple.getString("eMail"));
 
-			/*
-			 * Etape 2 : Création du statement
-			 */
-			Statement statement = connexion.createStatement();
+                objClient
+                        .setAdresse(adresseDAO.findById(tuple.getInt("idAdd")));
+                objClient.setLogin(loginDAO.findById(tuple.getInt("idLog")));
 
-			/*
-			 * Etape 3 : Exécution de la requête SQL
-			 */
-			ResultSet resultSet = statement.executeQuery("SELECT * FROM client WHERE siret IS NULL");
+                // Ajout du nouvel objet Client créé à la liste des clients
+                listeClients.add(objClient);
+            } // fin de la boucle de parcoutuple de l'ensemble des résultats
 
-			/*
-			 * Etape 4 : Parcours des résultats
-			 */
-			while (resultSet.next()) {
-				// Chaque ligne du tableau de résultat peut être exploitée
-				// cad, on va récupérer chaque valeur de chaque colonne
-				// je crée l'objet client
-				Client clientPhysique = new ClientPhysique(resultSet.getString("prenom"));
-				// appel des mutateurs
-				clientPhysique.setIdClient(resultSet.getInt("idClient"));
-				clientPhysique.setNom(resultSet.getString("nom"));
-				clientPhysique.setNumeroTel(resultSet.getString("numTel"));
-				clientPhysique.setNumeroFax(resultSet.getString("numFax"));
-				clientPhysique.setEmail(resultSet.getString("eMail"));
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        // Retourne la liste de toutes les clients
+        return listeClients;
+    }
 
-				clientPhysique.setAdresse(adresseDao.findById(resultSet.getInt("idAdd")));
-				clientPhysique.setLogin(loginDao.findById(resultSet.getInt("idLog")));
+    @Override
+    public Client findById(Integer idCli)
+    {
+        // Déclaration d'un objet Client
+        Client objClient = null;
+        AdresseDaoSql adresseDAO = new AdresseDaoSql();
+        LoginDaoSql loginDAO = new LoginDaoSql();
 
-				clientPhysique.setListReservations(reservationDao.findByClient(clientPhysique));
-				// j'ajoute l'objet client ainsi muté à la liste des passagers
-				listeClients.add(clientPhysique);
-			}
+        try
+        {
+            // Connexion à la BDD
+            PreparedStatement ps = connexion.prepareStatement(
+                    "SELECT * FROM client WHERE idClient=? AND siret IS NULL");
+            // Cherche l'idVill voulu dans la BDD
+            ps.setInt(1, idCli);
 
-			/*
-			 * Etape 5 : je ferme la connexion à la BDD
-			 */
-			connexion.close();
-		} catch (ClassNotFoundException e) {
-			System.err.println("Impossible de charger le pilote JDBC.");
-			e.printStackTrace();
-		} catch (SQLException e) {
-			System.err.println("Impossible de se connecter à la BDD.");
-			e.printStackTrace();
-		}
-		// Je retourne la liste des clients de la BDDonnéys
-		return listeClients;
-	}
+            // Récupération des résultats de la requête
+            ResultSet tuple = ps.executeQuery();
 
-	@Override
-	public Client findById(Integer id) {
-		// TODO Auto-generated method stub
+            if (tuple.next())
+            {
+                objClient = new ClientPhysique(tuple.getInt("idClient"));
+                objClient.setNom(tuple.getString("nom"));
+                ((ClientPhysique) objClient)
+                        .setPrenom(tuple.getString("prenom"));
+                objClient.setNumeroTel(tuple.getString("numTel"));
+                objClient.setNumeroFax(tuple.getString("numFax"));
+                objClient.setEmail(tuple.getString("eMail"));
 
-		// Initialiser mon client
-		Client clientPhysique = null;
-		try {
-			/*
-			 * Etape 0 : chargement du pilote
-			 */
-			Class.forName("com.mysql.jdbc.Driver");
+                objClient
+                        .setAdresse(adresseDAO.findById(tuple.getInt("idAdd")));
+                objClient.setLogin(loginDAO.findById(tuple.getInt("idLog")));
+            }
 
-			/*
-			 * Etape 1 : se connecter à la BDD
-			 */
-			Connection connexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/agence", "user",
-					"password");
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
 
-			/*
-			 * Etape 2 : Création du statement
-			 */
-			Statement statement = connexion.createStatement();
-
-			/*
-			 * Etape 3 : Exécution de la requête SQL
-			 */
-			ResultSet resultSet = statement
-					.executeQuery("SELECT * FROM client WHERE siret IS NULL AND idClient = " + id);
-
-			/*
-			 * Etape 4 : Parcours des résultats
-			 */
-			if (resultSet.next()) {
-				// Chaque ligne du tableau de résultat peut être exploitée
-				// cad, on va récupérer chaque valeur de chaque colonne
-				// je crée l'objet client
-				clientPhysique = new ClientPhysique(resultSet.getString("prenom"));
-				// appel des mutateurs
-				clientPhysique.setIdClient(resultSet.getInt("idClient"));
-				clientPhysique.setNom(resultSet.getString("nom"));
-
-				clientPhysique.setAdresse(adresseDao.findById(resultSet.getInt("idAdd")));
-				clientPhysique.setLogin(loginDao.findById(resultSet.getInt("idLog")));
-
-				clientPhysique.setAdresse(adresseDao.findById(resultSet.getInt("idAdd")));
-				clientPhysique.setLogin(loginDao.findById(resultSet.getInt("idLog")));
-
-				clientPhysique.setListReservations(reservationDao.findByClient(clientPhysique));
-			}
-			/*
-			 * Etape 5 : je ferme la connexion à la BDD
-			 */
-			connexion.close();
-		} catch (ClassNotFoundException e) {
-			System.err.println("Impossible de charger le pilote JDBC.");
-			e.printStackTrace();
-		} catch (SQLException e) {
-			System.err.println("Impossible de se connecter à la BDD.");
-			e.printStackTrace();
-		}
-		// Je retourne l'objet métier
-		return clientPhysique;
-	}
+        return objClient;
+    }
 
 }

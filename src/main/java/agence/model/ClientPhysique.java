@@ -1,35 +1,40 @@
+/**
+ * 
+ */
 package agence.model;
 
-public class ClientPhysique extends Client {
+/**
+ * @author Seme
+ */
+public class ClientPhysique extends Client
+{
+    /**
+     * Prénom
+     */
+    private String prenom;
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return super.toString() + "ClientPhysique [prenom=" + prenom + "]";
-	}
-	private String prenom;
+    /**
+     * @param idCli
+     */
+    public ClientPhysique(int idCli)
+    {
+        super(idCli);
+    }
 
-	public String getPrenom() {
-		return prenom;
-	}
+    /**
+     * @return the prenom
+     */
+    public String getPrenom()
+    {
+        return prenom;
+    }
 
-	public void setPrenom(String prenom) {
-		this.prenom = prenom;
-	}
-
-	public ClientPhysique() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
-	public ClientPhysique(int idClient) {
-		super(idClient);
-		// TODO Auto-generated constructor stub
-	} 
-	public ClientPhysique(String prenom) {
-		this.prenom = prenom;
-		// TODO Auto-generated constructor stub
-	} 
+    /**
+     * @param prenom
+     *            the prenom to set
+     */
+    public void setPrenom(String prenom)
+    {
+        this.prenom = prenom;
+    }
 }

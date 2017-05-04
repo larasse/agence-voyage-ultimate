@@ -1,62 +1,127 @@
+/**
+ * 
+ */
 package agence.model;
 
-public class Login {
+/**
+ * Représente un compte utilisateur créé pur un client
+ * 
+ * @author seme
+ */
+public class Login
+{
 
-	private int id;
-	
-	@Override
-	public String toString() {
-		return "Login [id=" + id + ", login=" + login + ", admin=" + admin + "]";
-	}
+    /**
+     * Identifiant technique du compte
+     */
+    private int idLog;
+    /**
+     * Login choisi par le client.
+     * Peut être une adresse email ou un pseudo
+     */
+    private String login;
+    /**
+     * Mot de passe
+     */
+    private String motDePasse;
+    /**
+     * Est-il administrateur ?
+     */
+    private boolean admin;
 
+    /**
+     * Constructeur par défaut
+     */
+    public Login()
+    {
 
-	private String login;
-	
-	private String motDePasse;
-	
-	private int admin ;
-	
-	
-public int getid(){
-return id;
+    }
 
-}
+    /**
+     * Constructeur
+     * 
+     * @param idLog
+     *            Identifiant technique du compte login
+     */
+    public Login(int idLog)
+    {
+        this();
+        this.idLog = idLog;
+    }
 
+    /**
+     * @return the idLog
+     */
+    public int getIdLog()
+    {
+        return idLog;
+    }
 
+    /**
+     * @param idLog
+     *            the idLog to set
+     */
+    public void setIdLog(int idLog)
+    {
+        this.idLog = idLog;
+    }
 
+    /**
+     * @return the login
+     */
+    public String getLogin()
+    {
+        return login;
+    }
 
-public void setId(int id) {
-	this.id = id;
-}
+    /**
+     * @param login
+     *            the login to set
+     */
+    public void setLogin(String login)
+    {
+        this.login = login;
+    }
 
+    /**
+     * @return the motDePasse
+     */
+    public String getMotDePasse()
+    {
+        return motDePasse;
+    }
 
-public String getLogin() {
-	return login;
-}
+    /**
+     * @param motDePasse
+     *            the motDePasse to set
+     */
+    public void setMotDePasse(String motDePasse)
+    {
+        this.motDePasse = motDePasse;
+    }
 
+    /**
+     * @return the admin
+     */
+    public boolean isAdmin()
+    {
+        return admin;
+    }
 
- 
-public void setLogin(String login) {
-	this.login = login;
-}
+    /**
+     * @param admin
+     *            the admin to set
+     */
+    public void setAdmin(boolean admin)
+    {
+        this.admin = admin;
+    }
 
+    @Override
+    public String toString()
+    {
+        return "Login [idLog=" + idLog + ", Login=" + login + ", motDePasse="
+                + motDePasse + ", admin=" + admin + "]";
+    }
 
-public String getMotDePasse() {
-	return motDePasse;
-}
-
-
-public void setMotDePasse(String motDePasse) {
-	this.motDePasse = motDePasse;
-}
-
-
-public int getAdmin() {
-	return admin;
-}
-
-
-public void setAdmin(int admin) {
-	this.admin = admin;
-}
 }

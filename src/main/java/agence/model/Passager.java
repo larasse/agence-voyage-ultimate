@@ -4,12 +4,11 @@ package agence.model;
  * Classe Passager qui représente le passager de la réservation
  * 
  * @author Seme
- *
  */
 public class Passager
 {
     /**
-     * Id du passager
+     * Identifiant technique du passager
      */
     private int idPas;
     /**
@@ -38,7 +37,7 @@ public class Passager
     }
 
     /**
-     * 
+     * Constructeur par défaut
      */
     public Passager()
     {
@@ -114,7 +113,6 @@ public class Passager
 
     /*
      * (non-Javadoc)
-     * 
      * @see java.lang.Object#toString()
      */
     @Override

@@ -12,17 +12,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import agence.model.Adresse;
+import agence.model.Client;
 
 /**
  * @author Seme
- *
  */
 public class AdresseDaoFile implements AdresseDao
 {
 
     /*
      * (non-Javadoc)
-     * 
      * @see agence.dao.Dao#findAll()
      */
     @Override
@@ -61,7 +60,6 @@ public class AdresseDaoFile implements AdresseDao
         }
         catch (IOException e)
         {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
@@ -70,7 +68,6 @@ public class AdresseDaoFile implements AdresseDao
 
     /*
      * (non-Javadoc)
-     * 
      * @see agence.dao.AdresseDao#findById(java.lang.Integer)
      */
     @Override
@@ -132,6 +129,17 @@ public class AdresseDaoFile implements AdresseDao
             }
         }
         return adresse;
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see agence.dao.AdresseDao#findByClient(agence.model.Client)
+     */
+    @Override
+    public Adresse findByClient(Client client)
+    {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }

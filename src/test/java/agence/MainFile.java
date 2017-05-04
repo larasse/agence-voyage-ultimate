@@ -29,7 +29,9 @@ public class MainFile
         List<Reservation> reservations = reservationDao.findAll();
         Reservation reservation = reservationDao.findById(2);
         // Recherche par passager
-        List<Reservation> reservationsPassager = reservationDao.findByPassager(passager);
+        List<Reservation> reservationsPassager = reservationDao
+                .findByPassager(passager);
+
     }
 
 }
