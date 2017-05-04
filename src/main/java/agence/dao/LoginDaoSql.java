@@ -88,4 +88,22 @@ public class LoginDaoSql extends DaoSQL implements LoginDao
         return objLogin;
     }
 
+	@Override
+	public void create(Login obj) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Login update(Login obj) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void delete(Login obj) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

@@ -145,4 +145,22 @@ public class EscaleDaoSql extends DaoSQL implements EscaleDao
         return escales;
     }
 
+	@Override
+	public void create(Escale obj) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Escale update(Escale obj) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void delete(Escale obj) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

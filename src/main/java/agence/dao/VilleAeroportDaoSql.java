@@ -90,4 +90,22 @@ public class VilleAeroportDaoSql extends DaoSQL implements VilleAeroportDao
         return villeAeroport;
     }
 
+	@Override
+	public void create(VilleAeroport obj) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public VilleAeroport update(VilleAeroport obj) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void delete(VilleAeroport obj) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

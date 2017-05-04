@@ -110,4 +110,22 @@ public class VolDaoSql extends DaoSQL implements VolDao
 
         return vol;
     }
+
+	@Override
+	public void create(Vol obj) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Vol update(Vol obj) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void delete(Vol obj) {
+		// TODO Auto-generated method stub
+		
+	}
 }
