@@ -23,6 +23,19 @@ public class Reservation
      */
     private String numero;
     /**
+	 * @param idRes
+	 * @param date
+	 * @param numero
+	 * @param etat
+	 */
+	public Reservation(int idRes, Date date, String numero, EtatReservation etat) {
+		this.idRes = idRes;
+		this.date = date;
+		this.numero = numero;
+		this.etat = etat;
+	}
+
+	/**
      * Etat de la réservation (annulée ou confirmée)
      */
     private EtatReservation etat;
