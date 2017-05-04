@@ -26,6 +26,17 @@ public class Passager
     private Adresse adresse;
 
     /**
+	 * @param idPas
+	 * @param nom
+	 * @param prenom
+	 */
+	public Passager(int idPas, String nom, String prenom) {
+		this.idPas = idPas;
+		this.nom = nom;
+		this.prenom = prenom;
+	}
+
+	/**
      * Constructeur
      * 
      * @param idPas

@@ -16,6 +16,19 @@ public class Login
      */
     private int idLog;
     /**
+	 * @param idLog
+	 * @param login
+	 * @param motDePasse
+	 * @param admin
+	 */
+	public Login(int idLog, String login, String motDePasse, boolean admin) {
+		this.idLog = idLog;
+		this.login = login;
+		this.motDePasse = motDePasse;
+		this.admin = admin;
+	}
+
+	/**
      * Login choisi par le client.
      * Peut être une adresse email ou un pseudo
      */

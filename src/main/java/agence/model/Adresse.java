@@ -131,6 +131,21 @@ public class Adresse
     }
 
     /**
+	 * @param idAdd
+	 * @param adresse
+	 * @param codePostal
+	 * @param ville
+	 * @param pays
+	 */
+	public Adresse(int idAdd, String adresse, String codePostal, String ville, String pays) {
+		this.idAdd = idAdd;
+		this.adresse = adresse;
+		this.codePostal = codePostal;
+		this.ville = ville;
+		this.pays = pays;
+	}
+
+	/**
      * @param pays
      *            the pays to set
      */
