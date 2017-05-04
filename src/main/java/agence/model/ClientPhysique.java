@@ -14,6 +14,19 @@ public class ClientPhysique extends Client
     private String prenom;
 
     /**
+	 * @param idCli
+	 * @param nom
+	 * @param numeroTel
+	 * @param numeroFax
+	 * @param email
+	 * @param prenom
+	 */
+	public ClientPhysique(int idCli, String nom, String numeroTel, String numeroFax, String email, String prenom) {
+		super(idCli, nom, numeroTel, numeroFax, email);
+		this.prenom = prenom;
+	}
+
+	/**
      * @param idCli
      */
     public ClientPhysique(int idCli)

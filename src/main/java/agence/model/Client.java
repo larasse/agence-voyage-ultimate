@@ -22,6 +22,21 @@ public abstract class Client
      */
     private String nom;
     /**
+	 * @param idCli
+	 * @param nom
+	 * @param numeroTel
+	 * @param numeroFax
+	 * @param email
+	 */
+	public Client(int idCli, String nom, String numeroTel, String numeroFax, String email) {
+		this.idCli = idCli;
+		this.nom = nom;
+		this.numeroTel = numeroTel;
+		this.numeroFax = numeroFax;
+		this.email = email;
+	}
+
+	/**
      * Numéro de téléhpone
      */
     private String numeroTel;
