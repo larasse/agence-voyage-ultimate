@@ -1,12 +1,16 @@
 package agence.dao;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
 import agence.model.Login;
+
 
 public class LoginDaoSql extends DaoSQL implements LoginDao
 {
@@ -89,21 +93,125 @@ public class LoginDaoSql extends DaoSQL implements LoginDao
     }
 
 	@Override
-	public void create(Login obj) {
+	public void create(Login login) {
 		// TODO Auto-generated method stub
-		
-	}
+		Connection conn = null;
+		 try
+	        {
+	            Class.forName("com.mysql.jdbc.Driver");
+	            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/agence", "user", "password");
+
+	            PreparedStatement ps = conn
+	                    .prepareStatement("insert into login (id,login,motDePasse,admin) VALUES(?,?,?,?)");
+	            ps.setInt(1, login.getIdLog());
+	            ps.setString(2, login.getLogin());
+	            ps.setString(3, login.getMotDePasse());
+	            ps.setBoolean(4, login.isAdmin());
+	            ps.executeUpdate();
+	        }
+	            catch (ClassNotFoundException e)
+		        {
+		            e.printStackTrace();
+		        }
+		        catch (SQLException e)
+		        {
+		            e.printStackTrace();
+		        }
+		        finally
+		        {
+		            try
+		            {
+		                conn.close();
+		            }
+		            catch (SQLException e)
+		            {
+		                e.printStackTrace();
+		            }
+		        }
+		    }
 
 	@Override
-	public Login update(Login obj) {
+	public Login update(Login login) {
 		// TODO Auto-generated method stub
-		return null;
-	}
+		  Connection conn = null;
+		    try
+		    {
+		        Class.forName("com.mysql.jdbc.Driver");
+		        conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/agence", "user", "password");
+
+		        PreparedStatement ps = conn
+		                .prepareStatement("update login set login=?,motDePasse=?,admin=? where id = ?");
+
+		        
+	            ps.setString(1, login.getLogin());
+	            ps.setString(2, login.getMotDePasse());
+	            ps.setBoolean(3, login.isAdmin());
+		        ps.setInt(4, login.getIdLog());
+		     
+		        ps.executeUpdate();
+		    }
+		    catch (ClassNotFoundException e)
+		    {
+		        e.printStackTrace();
+		    }
+		    catch (SQLException e)
+		    {
+		        e.printStackTrace();
+		    }
+		    finally
+		    {
+		        try
+		        {
+		            conn.close();
+		        }
+		        catch (SQLException e)
+		        {
+		            e.printStackTrace();
+		        }
+		    }
+
+		    return login;
+		}
+	
 
 	@Override
-	public void delete(Login obj) {
+	public void delete(Login login) {
 		// TODO Auto-generated method stub
-		
+		Connection conn = null;
+	    try
+	    {
+	        Class.forName("com.mysql.jdbc.Driver");
+	        conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/agence", "user", "password");
+
+	        PreparedStatement ps = conn.prepareStatement("delete from login where id = ?");
+
+	        ps.setInt(1, login.getIdLog());
+	        ps.executeUpdate();
+
+	    }
+	    catch (ClassNotFoundException e)
+	    {
+	        e.printStackTrace();
+	    }
+	    catch (SQLException e)
+	    {
+	        e.printStackTrace();
+	    }
+	    finally
+	    {
+	        try
+	        {
+	            conn.close();
+	        }
+	        catch (SQLException e)
+	        {
+	            e.printStackTrace();
+
+	       }
+	        
 	}
+	    
+	 
+	    }
 
 }
