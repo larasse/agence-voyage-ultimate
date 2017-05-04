@@ -3,9 +3,12 @@
  */
 package agence.dao;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -112,21 +115,133 @@ public class ClientPhysiqueDaoSql extends ClientDaoSql
     }
 
 	@Override
-	public void create(Client obj) {
+	public void create(Client client) {
 		// TODO Auto-generated method stub
-		
+        Connection conn = null;
+        try
+        {
+            Class.forName("com.mysql.jdbc.Driver");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/agence", "user", "password");
+
+            PreparedStatement ps = conn
+                    .prepareStatement("insert into client (idClient,nom,prenom,numtel,numfax,email,idAdd, idLog) VALUES(?,?,?,?,?,?,?,?)");
+            ps.setInt(1, client.getIdCli());
+            ps.setString(2, client.getNom());
+            ps.setString(3, ((ClientPhysique) client).getPrenom());
+            ps.setString(4, client.getNumeroTel());
+            ps.setString(5, client.getNumeroFax());
+            ps.setString(6, client.getEmail());
+            ps.setInt(7, client.getAdresse().getIdAdd());
+            
+            if(client.getLogin() != null){
+            	ps.setInt(8, client.getLogin().getIdLog());
+            }
+           
+            else {
+				ps.setNull(8, java.sql.Types.BIGINT);
+			}
+            ps.executeUpdate();
+
+        }
+        catch (ClassNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            try
+            {
+                conn.close();
+            }
+            catch (SQLException e)
+            {
+                e.printStackTrace();
+            }
+        }
 	}
 
 	@Override
-	public Client update(Client obj) {
-		// TODO Auto-generated method stub
-		return null;
+	public Client update(Client client) {
+        Connection conn = null;
+        try
+        {
+            Class.forName("com.mysql.jdbc.Driver");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/agence", "user", "password");
+
+            PreparedStatement ps = conn
+                    .prepareStatement("update client set nom=?,prenom=?,numtel=?, numfax=?,email=?,idAdd=? where idClient = ?");
+            
+            ps.setInt(7, client.getIdCli());
+            
+            ps.setString(1, client.getNom());
+            ps.setString(2, ((ClientPhysique) client).getPrenom());
+            ps.setString(3, client.getNumeroTel());
+            ps.setString(4, client.getNumeroFax());
+            ps.setString(5, client.getEmail());
+            ps.setInt(6, client.getAdresse().getIdAdd());
+            ps.executeUpdate();
+
+        }
+        catch (ClassNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            try
+            {
+                conn.close();
+            }
+            catch (SQLException e)
+            {
+                e.printStackTrace();
+            }
+        }
+
+        return client;		
 	}
 
 	@Override
-	public void delete(Client obj) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void delete(Client client) {
+        Connection conn = null;
+        try
+        {
+            Class.forName("com.mysql.jdbc.Driver");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/agence", "user", "password");
 
+            PreparedStatement ps = conn.prepareStatement("delete from client where idClient = ?");
+
+            ps.setInt(1, client.getIdCli());
+            ps.executeUpdate();
+
+        }
+        catch (ClassNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            try
+            {
+                conn.close();
+            }
+            catch (SQLException e)
+            {
+                e.printStackTrace();
+            }
+        }
+    }		
+		
 }
