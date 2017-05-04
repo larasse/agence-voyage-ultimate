@@ -14,6 +14,7 @@ import java.util.List;
 
 import agence.model.Client;
 import agence.model.ClientPhysique;
+import agence.model.Reservation;
 
 /**
  * @author Seme
@@ -26,6 +27,7 @@ public class ClientPhysiqueDaoSql extends ClientDaoSql
         List<Client> listeClients = new ArrayList<Client>();
         AdresseDaoSql adresseDAO = new AdresseDaoSql();
         LoginDaoSql loginDAO = new LoginDaoSql();
+        ReservationDaoSql reservationDaoSql = new ReservationDaoSql();
 
         try
         {
@@ -57,6 +59,7 @@ public class ClientPhysiqueDaoSql extends ClientDaoSql
                 objClient
                         .setAdresse(adresseDAO.findById(tuple.getInt("idAdd")));
                 objClient.setLogin(loginDAO.findById(tuple.getInt("idLog")));
+                objClient.setListeReservations(reservationDaoSql.findByClient(objClient));
 
                 // Ajout du nouvel objet Client créé à la liste des clients
                 listeClients.add(objClient);
@@ -78,6 +81,7 @@ public class ClientPhysiqueDaoSql extends ClientDaoSql
         Client objClient = null;
         AdresseDaoSql adresseDAO = new AdresseDaoSql();
         LoginDaoSql loginDAO = new LoginDaoSql();
+        ReservationDaoSql reservationDaoSql = new ReservationDaoSql();
 
         try
         {
@@ -103,6 +107,7 @@ public class ClientPhysiqueDaoSql extends ClientDaoSql
                 objClient
                         .setAdresse(adresseDAO.findById(tuple.getInt("idAdd")));
                 objClient.setLogin(loginDAO.findById(tuple.getInt("idLog")));
+                objClient.setListeReservations(reservationDaoSql.findByClient(objClient));
             }
 
         }
@@ -211,6 +216,10 @@ public class ClientPhysiqueDaoSql extends ClientDaoSql
 
 	@Override
 	public void delete(Client client) {
+        ReservationDao reservationDao = new ReservationDaoSql();
+        LoginDao loginDao = new LoginDaoSql();
+        AdresseDao adresseDaoSql = new AdresseDaoSql();
+		
         Connection conn = null;
         try
         {
@@ -221,6 +230,15 @@ public class ClientPhysiqueDaoSql extends ClientDaoSql
 
             ps.setInt(1, client.getIdCli());
             ps.executeUpdate();
+            
+            //On supprime les objets associés au client
+            
+            for (Reservation reservation : client.getListeReservations()) {
+				reservationDao.delete(reservation);
+			}
+            
+            loginDao.delete(client.getLogin());
+            adresseDaoSql.delete(client.getAdresse());
 
         }
         catch (ClassNotFoundException e)
