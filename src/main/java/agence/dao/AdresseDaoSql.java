@@ -1,9 +1,12 @@
 package agence.dao;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -155,21 +158,123 @@ public class AdresseDaoSql extends DaoSQL implements AdresseDao
     }
 
 	@Override
-	public void create(Adresse obj) {
+	public void create(Adresse adresse) {
 		// TODO Auto-generated method stub
-		
+		Connection conn = null;
+        try
+        {
+            Class.forName("com.mysql.jdbc.Driver");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/agence", "user", "password");
+
+            PreparedStatement ps =  conn
+                    .prepareStatement("insert into adresse (idAdd,adresse,codePostal,ville,pays) VALUES(?,?,?,?,?)");
+            ps.setInt(1, adresse.getIdAdd());
+            ps.setString(2, adresse.getAdresse());
+            ps.setString(3, adresse.getCodePostal());
+            ps.setString(4, adresse.getVille());
+            ps.setString(5, adresse.getPays());
+          
+            ps.executeUpdate();
+
+        }
+        catch (ClassNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            try
+            {
+                conn.close();
+            }
+            catch (SQLException e)
+            {
+                e.printStackTrace();
+            }
+        }
+    	
 	}
 
 	@Override
-	public Adresse update(Adresse obj) {
-		// TODO Auto-generated method stub
-		return null;
+	public Adresse update(Adresse adresse) {
+	     Connection conn = null;
+	        try
+	        {
+	            Class.forName("com.mysql.jdbc.Driver");
+	            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/agence", "user", "password");
+
+	            PreparedStatement ps = conn
+	                    .prepareStatement("update adresse set adresse=?,codePostal=?,ville=?,pays=? where idAdd = ?");
+
+	            ps.setInt(5, adresse.getIdAdd());
+
+	            ps.setString(1, adresse.getAdresse());
+	            ps.setString(2, adresse.getCodePostal());
+	            ps.setString(3, adresse.getVille());
+	            ps.setString(4, adresse.getPays());
+	            ps.executeUpdate();
+
+	        }
+	        catch (ClassNotFoundException e)
+	        {
+	            e.printStackTrace();
+	        }
+	        catch (SQLException e)
+	        {
+	            e.printStackTrace();
+	        }
+	        finally
+	        {
+	            try
+	            {
+	                conn.close();
+	            }
+	            catch (SQLException e)
+	            {
+	                e.printStackTrace();
+	            }
+	        }
+			return null;
 	}
 
 	@Override
-	public void delete(Adresse obj) {
+	public void delete(Adresse adresse) {
 		// TODO Auto-generated method stub
-		
+		Connection conn = null;
+        try
+        {
+            Class.forName("com.mysql.jdbc.Driver");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/agence", "user", "password");
+
+            PreparedStatement ps = conn.prepareStatement("delete from adresse where idAdd = ?");
+            ps.setInt(1, adresse.getIdAdd());
+
+            ps.executeUpdate();
+
+        }
+        catch (ClassNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            try
+            {
+                conn.close();
+            }
+            catch (SQLException e)
+            {
+                e.printStackTrace();
+            }	
+	}
 	}
 
 }
