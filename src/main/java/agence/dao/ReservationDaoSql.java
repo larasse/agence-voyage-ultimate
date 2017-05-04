@@ -4,7 +4,9 @@
 package agence.dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -308,21 +310,127 @@ public class ReservationDaoSql extends DaoSQL implements ReservationDao
     }
 
 	@Override
-	public void create(Reservation obj) {
+	public void create(Reservation reservation) {
 		// TODO Auto-generated method stub
-		
+		// TODO Auto-generated method stub
+				Connection conn = null;
+		        try
+		        {
+		            Class.forName("com.mysql.jdbc.Driver");
+		            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/agence", "user", "password");
+
+		            PreparedStatement ps =  conn
+		                    .prepareStatement("insert into reservation (idResa,dateReservation,numero,etat,idVol, idPassager, idClient) VALUES(?,?,?,?,?)");
+		            ps.setInt(1, reservation.getIdRes());
+		            ps.setDate(2, (Date) reservation.getDate());
+		            ps.setString(3, reservation.getNumero());
+		            ps.setString(4,reservation.getEtat().getLabel());
+		           ps.setInt(5, reservation.getVol().getIdVol());
+		            ps.setInt(6, reservation.getIdPas());
+		            ps.setInt(7, reservation.getIdCli());
+		            
+		            ps.executeUpdate();
+
+		        }
+		        catch (ClassNotFoundException e)
+		        {
+		            e.printStackTrace();
+		        }
+		        catch (SQLException e)
+		        {
+		            e.printStackTrace();
+		        }
+		        finally
+		        {
+		            try
+		            {
+		                conn.close();
+		            }
+		            catch (SQLException e)
+		            {
+		                e.printStackTrace();
+		            }
+		        }
+		    	
+			}
+
+	@Override
+	public Reservation update(Reservation reservation ) {
+	     Connection conn = null;
+	        try
+	        {
+	            Class.forName("com.mysql.jdbc.Driver");
+	            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/agence", "user", "password");
+
+	            PreparedStatement ps = conn
+	                    .prepareStatement("update reservation set dateReservation=?,numero=?,etat=?,idVol=?,idPassager=?,idClient=? where idResa = ?");
+
+	            ps.setInt(7, reservation.getIdRes());
+
+	            ps.setDate(1, (Date) reservation.getDate());
+	            ps.setString(2, reservation.getNumero());
+		        ps.setString(3, reservation.getEtat().getLabel());
+		        ps.setInt(4, reservation.getVol().getIdVol());
+		            ps.setInt(5, reservation.getIdPas());
+		            ps.setInt(6, reservation.getIdCli());
+	            ps.executeUpdate();
+
+	        }
+	        catch (ClassNotFoundException e)
+	        {
+	            e.printStackTrace();
+	        }
+	        catch (SQLException e)
+	        {
+	            e.printStackTrace();
+	        }
+	        finally
+	        {
+	            try
+	            {
+	                conn.close();
+	            }
+	            catch (SQLException e)
+	            {
+	                e.printStackTrace();
+	            }
+	        }
+			return null;
 	}
 
 	@Override
-	public Reservation update(Reservation obj) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public void delete(Reservation reservation) {
+		Connection conn = null;
+        try
+        {
+            Class.forName("com.mysql.jdbc.Driver");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/agence", "user", "password");
 
-	@Override
-	public void delete(Reservation obj) {
-		// TODO Auto-generated method stub
-		
+            PreparedStatement ps = conn.prepareStatement("delete from adresse where idResa = ?");
+            ps.setInt(1, reservation.getIdRes());
+
+            ps.executeUpdate();
+
+        }
+        catch (ClassNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            try
+            {
+                conn.close();
+            }
+            catch (SQLException e)
+            {
+                e.printStackTrace();
+            }	
+	}
 	}
 
 }
