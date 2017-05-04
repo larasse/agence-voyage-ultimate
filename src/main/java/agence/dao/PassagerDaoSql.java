@@ -3,12 +3,15 @@
  */
 package agence.dao;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-
+import agence.model.Adresse;
 import agence.model.Passager;
 
 /**
@@ -119,21 +122,126 @@ public class PassagerDaoSql extends DaoSQL implements PassagerDao
     }
 
 	@Override
-	public void create(Passager obj) {
+	public void create(Passager passager) {
 		// TODO Auto-generated method stub
-		
-	}
+				Connection conn = null;
+				 try
+			        {
+			            Class.forName("com.mysql.jdbc.Driver");
+			            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/agence", "user", "password");
+
+			            PreparedStatement ps = conn
+			                    .prepareStatement("insert into passager (idPassager,nom,prenom,idAdd) VALUES(?,?,?,?)");
+			            ps.setInt(1, passager.getIdPas());
+			            ps.setString(2, passager.getNom());
+			            ps.setString(3, passager.getPrenom());
+			            ps.setInt(4, passager.getAdresse().getIdAdd());
+			            ps.executeUpdate();
+			        }
+			            catch (ClassNotFoundException e)
+				        {
+				            e.printStackTrace();
+				        }
+				        catch (SQLException e)
+				        {
+				            e.printStackTrace();
+				        }
+				        finally
+				        {
+				            try
+				            {
+				                conn.close();
+				            }
+				            catch (SQLException e)
+				            {
+				                e.printStackTrace();
+				            }
+				        }
+				    }
+
 
 	@Override
-	public Passager update(Passager obj) {
+	public Passager update(Passager passager) {
 		// TODO Auto-generated method stub
-		return null;
-	}
+		  Connection conn = null;
+		    try
+		    {
+		        Class.forName("com.mysql.jdbc.Driver");
+		        conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/agence", "user", "password");
+
+		        PreparedStatement ps = conn
+		                .prepareStatement("update passager set nom=?,prenom=?, idAdd=? where idPassager = ?");
+
+		        
+		        
+	            ps.setString(1, passager.getNom());
+	            ps.setString(2, passager.getPrenom());
+	            ps.setInt(3, passager.getAdresse().getIdAdd());
+	            ps.setInt(4, passager.getIdPas());
+	            ps.executeUpdate();
+		    }
+		    catch (ClassNotFoundException e)
+		    {
+		        e.printStackTrace();
+		    }
+		    catch (SQLException e)
+		    {
+		        e.printStackTrace();
+		    }
+		    finally
+		    {
+		        try
+		        {
+		            conn.close();
+		        }
+		        catch (SQLException e)
+		        {
+		            e.printStackTrace();
+		        }
+		    }
+
+		    return passager;
+		}
+	
 
 	@Override
-	public void delete(Passager obj) {
+	public void delete(Passager passager) {
 		// TODO Auto-generated method stub
-		
-	}
+				Connection conn = null;
+			    try
+			    {
+			        Class.forName("com.mysql.jdbc.Driver");
+			        conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/agence", "user", "password");
 
-}
+			        PreparedStatement ps = conn.prepareStatement("delete from login where idPassager = ?");
+
+			        ps.setInt(1, passager.getIdPas());
+			        ps.executeUpdate();
+
+			    }
+			    catch (ClassNotFoundException e)
+			    {
+			        e.printStackTrace();
+			    }
+			    catch (SQLException e)
+			    {
+			        e.printStackTrace();
+			    }
+			    finally
+			    {
+			        try
+			        {
+			            conn.close();
+			        }
+			        catch (SQLException e)
+			        {
+			            e.printStackTrace();
+
+			       }
+			        
+			}
+			    
+			 
+			    }
+
+		}
